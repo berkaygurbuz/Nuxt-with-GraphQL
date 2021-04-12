@@ -2,9 +2,14 @@
   <div>
     <input v-model="searchedId" placeholder="Enter the ID" />
     <h1>{{ character.name }}</h1>
-    <ul>
+    <ul class="w-64 px-2 text-gray-600">
       <li v-for="character in characters.results" :key="character.id">
-        {{ character.name }} -- {{ character.gender }}
+        <nuxt-link
+          :to="character.id"
+          class="hover:font-black hover:text-gray-900 leading-loose font-bold" 
+        >
+          {{ character.name }}
+        </nuxt-link>
       </li>
     </ul>
   </div>
@@ -32,21 +37,21 @@ export default {
         }
       }
     `,
-    character:{
-        query:gql`
-        query getCharacter($id:ID!){
-            character(id:$id){
-                id
-                name
-            }
+    character: {
+      query: gql`
+        query getCharacter($id: ID!) {
+          character(id: $id) {
+            id
+            name
+          }
         }
-        `,
-        variables(){
-            return{
-            id:this.searchedId
-            }
+      `,
+      variables() {
+        return {
+          id: this.searchedId,
         }
-    }
+      },
+    },
   },
 }
 </script>

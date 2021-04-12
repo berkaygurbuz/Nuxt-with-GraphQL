@@ -1,46 +1,50 @@
 <template>
-  <div class="container">
+  <div class="container ml-44 mt-16">
     <div>
-      <Logo />
-      <h1 class="title">Rick and Morty</h1>
-      <List></List>
+      <h1 class="text-4xl font-semibold text-gray-800 mb-8">Rick and Morty</h1>
+      <div class="flex">
+        <ul class="w-64 px-2 text-gray-600">
+          <li v-for="character in characters.results" :key="character.id">
+            <nuxt-link
+              :to="character.id"
+              class="hover:font-black hover:text-gray-900 leading-loose font-bold"
+            >
+              {{ character.name }}
+            </nuxt-link>
+          </li>
+        </ul>
+        <div class="flex-grow bg-white min-h-full">
+          <nuxt-child :key="$route.params.id"></nuxt-child>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+import gql from 'graphql-tag'
+
+export default {
+  data() {
+    return {
+      searchedId: 1,
+    }
+  },
+  apollo: {
+    characters: gql`
+      query {
+        characters {
+          results {
+            id
+            name
+            gender
+            image
+          }
+        }
+      }
+    `,
+  },
+}
 </script>
 
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
+<style></style>
