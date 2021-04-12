@@ -8,12 +8,16 @@ const typeDefs = gql`
     image:String
     status:String
     species:String
-    
+
   }
 
   type Query {
     characters: [Character]
     character(id:ID!):Character
+  }
+
+  type Mutation{
+    addCharacter(name:String,gender:String,image:String,status:String,species:String):Character
   }
 `
 
@@ -25,6 +29,16 @@ const resolvers={
         character:(_,{id})=>{
             return data.find(character=>character.id==id)
         }
+    },
+    Mutation:{
+      addCharacter(_,payload){
+        const storeCharacter={
+          id:234,
+          ...payload
+        }
+        data.push(storeCharacter)
+        return storeCharacter
+      }
     }
 }
 
